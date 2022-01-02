@@ -1,0 +1,158 @@
+name: Build-Golang-Project
+on:
+  workflow_dispatch:
+
+jobs:
+  Gogs:
+    name: Build Gogs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.17.5
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17.5
+
+      - name: Use Node.js 16.13.1
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.13.1
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          repository: gogs/gogs
+
+      - name: Build Binary Files
+        run: |
+          sudo apt update -qq
+          sudo apt install -qq upx libpam0g-dev
+          node -v
+          go version
+          go build -tags "sqlite pam cert" -o gogs
+
+      - name: UPX Binary Files to Reduce Size.
+        if: success()
+        run: |
+          upx -9 gogs -q
+
+      - name: Upload Flies to Github Actions
+        uses: actions/upload-artifact@v2
+        if: success()
+        with:
+          name: Gogs
+          path: gogs
+
+      - name: Upload Gogs's Binary Files to Main Download Station.
+        if: success()
+        run: |
+          zip -r -o -q -9 Gogs.zip gogs
+          curl -F "token=${{ secrets.UPLOAD_TOKEN }}" -F "location=Software/Gogs" -F "file=@Gogs.zip" ${{ secrets.MAIN_UPLOAD_PROCESSOR }}
+
+  Gitea:
+    name: Build Gitea
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.17.5
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17.5
+
+      - name: Use Node.js 16.13.1
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.13.1
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          repository: go-gitea/gitea
+
+      - name: Build Binary Flies
+        run: |
+          node -v
+          go version
+          TAGS="bindata sqlite sqlite_unlock_notify" make build
+
+      - name: UPX Binary Files to Reduce Size.
+        if: success()
+        run: |
+          upx -9 gitea -q
+
+      - name: Upload Flies to Github Actions
+        uses: actions/upload-artifact@v2
+        if: success()
+        with:
+          name: Gitea
+          path: gitea
+
+      - name: Upload Gitea's Binary Files to Main Download Station.
+        if: success()
+        run: |
+          zip -r -o -q -9 Gitea.zip gitea
+          curl -F "token=${{ secrets.UPLOAD_TOKEN }}" -F "location=Software/Gitea" -F "file=@Gitea.zip" ${{ secrets.MAIN_UPLOAD_PROCESSOR }}
+
+  Nps:
+    name: Build Nps
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.17.5
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17.5
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          repository: ehang-io/nps
+
+      - name: Build Binary Files
+        run: |
+          go version
+          bash <(curl -fsSL https://raw.githubusercontent.com/1orz/My-action/master/Golang-Project/Nps/build.sh)
+
+      - name: Upload Flies to Github Actions
+        uses: actions/upload-artifact@v2
+        if: success()
+        with:
+          name: Nps
+          path: "*.tar.gz"
+
+      - name: Upload Nps's Binary Files to Main Download Station.
+        if: success()
+        run: |
+          zip -r -o -q -9 Nps.zip . -i *.tar.gz
+          curl -F "token=${{ secrets.UPLOAD_TOKEN }}" -F "location=Software/Nps" -F "file=@Nps.zip" ${{ secrets.MAIN_UPLOAD_PROCESSOR }}
+
+  Frp:
+    name: Build Frp
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.17.5
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17.5
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          repository: fatedier/frp
+
+      - name: Build Binary Files
+        run: |
+          cp -f `which go` /usr/bin/go
+          go version
+          bash package.sh
+
+      - name: Upload Flies to Github Actions
+        uses: actions/upload-artifact@v2
+        if: success()
+        with:
+          name: Frp
+          path: release/packages
+
+      - name: Upload Frp's Binary Files to Main Download Station.
+        if: success()
+        run: |
+          cd release/packages
+          zip -r -o -q -9 Frp.zip .
+          curl -F "token=${{ secrets.UPLOAD_TOKEN }}" -F "location=Software/Frp" -F "file=@Frp.zip" ${{ secrets.MAIN_UPLOAD_PROCESSOR }}
