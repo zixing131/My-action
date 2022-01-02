@@ -101,7 +101,7 @@ jobs:
         run: |
           cd /opt/images
           zip -r -o -q -9 padavan.zip . -i *.trx
-          curl -F "token=${{ secrets.UPLOAD_TOKEN }}" -F "location=Router/padavan/XiaoMi/XiaoMi-AC2100" -F "file=@padavan.zip" ${{ secrets.MAIN_UPLOAD_PROCESSOR }}
+          curl -F "token=${{ secrets.UPLOAD_TOKEN }}" -F "location=Router/Padavan/XiaoMi/RedMi-AC2100" -F "file=@padavan.zip" ${{ secrets.MAIN_UPLOAD_PROCESSOR }}
 
   R2100:
     runs-on: ubuntu-latest
@@ -200,4 +200,4 @@ jobs:
         run: |
           cd /opt/images
           zip -r -o -q -9 padavan.zip . -i *.trx
-          curl -F "token=${{ secrets.UPLOAD_TOKEN }}" -F "location=Router/padavan/XiaoMi/XiaoMi-AC2100" -F "file=@padavan.zip" ${{ secrets.MAIN_UPLOAD_PROCESSOR }}
+          curl -F "token=${{ secrets.UPLOAD_TOKEN }}" -F "location=Router/Padavan/XiaoMi/XiaoMi-AC2100" -F "file=@padavan.zip" ${{ secrets.MAIN_UPLOAD_PROCESSOR }}
