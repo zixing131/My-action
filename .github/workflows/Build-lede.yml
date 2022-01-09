@@ -37,7 +37,7 @@ jobs:
           make -j$(nproc) || make -j1 V=sc
           # 这里有个编译报错，必须先clean 一下。 详见 ERROR: package/lean/libcryptopp failed to build.
           make clean
-          make -j$(nproc) || make -j2 || make -j1 V=s
+          make -j$(nproc) || make -j1 V=s
           sudo df -h
 
       - name: Upload entire bin directory
@@ -92,7 +92,7 @@ jobs:
           make -j$(nproc) || make -j1 V=sc
           # 这里有个编译报错，必须先clean 一下。 详见 ERROR: package/lean/libcryptopp failed to build.
           make clean
-          make -j$(nproc) || make -j2 || make -j1 V=s
+          make -j$(nproc) || make -j1 V=s
           sudo df -h
 
       - name: Upload entire bin directory
@@ -147,7 +147,7 @@ jobs:
           make -j$(nproc) || make -j1 V=sc
           # 这里有个编译报错，必须先clean 一下。 详见 ERROR: package/lean/libcryptopp failed to build.
           make clean
-          make -j$(nproc) || make -j2 || make -j1 V=s
+          make -j$(nproc) || make -j1 V=s
           sudo df -h
 
       - name: Only Upload firmware
