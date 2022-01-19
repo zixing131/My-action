@@ -1,8 +1,6 @@
-name: Build-lede
+name: Build-Dsy
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: 0 12 * * *
+  workflow_dispatch: 
 
 jobs:
   
@@ -13,7 +11,7 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          bash <(curl -fsSL https://raw.githubusercontent.com/1orz/My-action/master/lede/prenv.sh)
+          bash <(curl -fsSL https://raw.githubusercontent.com/zixing131/My-action/master/lede/prenv.sh)
 
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -22,8 +20,8 @@ jobs:
 
       - name: Download and Load custom configuration
         run: |
-          curl -fsSL  https://raw.githubusercontent.com/zixing131/DSYUN/main/.config >.config
-          bash <(curl -fsSL https://raw.githubusercontent.com/1orz/My-action/master/lede/diy.sh)
+          curl -fsSL  https://raw.githubusercontent.com/zixing131/My-action/master/.config >.config
+          bash <(curl -fsSL https://raw.githubusercontent.com/zixing131/My-action/master/lede/diy.sh)
           make defconfig
 
       - name: Download package
@@ -61,7 +59,7 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          bash <(curl -fsSL https://raw.githubusercontent.com/1orz/My-action/master/openwrt/prenv.sh)
+          bash <(curl -fsSL https://raw.githubusercontent.com/zixing131/My-action/master/openwrt/prenv.sh)
 
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -70,8 +68,8 @@ jobs:
 
       - name: Download and Load custom configuration
         run: |
-          curl -fsSL https://raw.githubusercontent.com/zixing131/DSYUN/main/.config >.config
-          bash <(curl -fsSL https://raw.githubusercontent.com/1orz/My-action/master/openwrt/diy.sh)
+          curl -fsSL https://raw.githubusercontent.com/zixing131/My-action/master/.config >.config
+          bash <(curl -fsSL https://raw.githubusercontent.com/zixing131/My-action/master/openwrt/diy.sh)
           make defconfig
 
       - name: Download package
