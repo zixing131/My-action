@@ -1,9 +1,6 @@
 name: Build-lede
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 12 * * *
-
 jobs:
   
   MT7621:
